@@ -33,7 +33,7 @@ def rlogic_fun(xlname,email_id):
     failure=0
     #Take the number of redirects as Input convert it into Integer
     INT_NUMBER_OF_REDIRECTS = sh.nrows - 1
-    print INT_NUMBER_OF_REDIRECTS
+    print(INT_NUMBER_OF_REDIRECTS)
     #Spoof the urls to the required Akamai Environment
     SPOOF = 'e1.a.akamaiedge-staging.net'
     #Read every row from the input excel and write the corresponding out put into the buffer
@@ -46,9 +46,9 @@ def rlogic_fun(xlname,email_id):
         testurl = 'curl -sSIk ' + usurl + ' -H "Host:' + host_header + '" | grep Location | cut -c11- > temp.txt'
         os.system( testurl ) 
         var = subprocess.check_output(["cat","temp.txt"])
-        print "var is:" + var
+        print("var is:" + var)
         var = var.replace('\n', '').replace('\r', '')
-        print "location is:" + var
+        print("location is:" + var)
         if sh.cell( row, col+1 ).value == var:
                 sw.write( row, col, sh.cell( row, col ).value, styleg )
                 sw.write( row, col+1, sh.cell( row, col+1 ).value, styleg )
@@ -66,13 +66,13 @@ def rlogic_fun(xlname,email_id):
     sw.write( 1, 5, success, styleg )
     sw.write( 0, 6, 'Failure', styler )
     sw.write( 1, 6, failure, styler )
-    print "YOU WILL FIND THE TESTING RESULTS IN RESULTS.XLS FILE"
+    print("YOU WILL FIND THE TESTING RESULTS IN RESULTS.XLS FILE")
     rfile = datetime.datetime.now().isoformat() + "results.xls"
     output.save(rfile)
-    print rfile
+    print(rfile)
     send_email(rfile,email_id)
     cpcmd = "cp " + rfile + " static"
-    print cpcmd
+    print(cpcmd)
     os.system( cpcmd )
     result = [success,failure,rfile]
     return result
